@@ -1,36 +1,38 @@
 import mongoose from "mongoose";
 
 const proyectosSchema = mongoose.Schema({
-    nombre:{
+    nombreProyecto:{
         type:String,
         required:true,
         trim:true,
     },
-    descripcion:{
+    descripcionProyecto:{
         type:String,
         required:true,
         trim:true,
     },
-    fechaEntrega:{
+    fechaEntregaProyecto:{
         type:Date,
         default: Date.now()
     },
-    cliente:{
+    clienteProyecto:{
         type:String,
         required:true,
         trim:true,
     },
-    creador:{
+    creadorProyecto:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Usuarios"
     },
-    colaboradores:[
+    colaboradoresProyecto:[
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Usuarios"
         }
     ]
 
+},{
+    timestamps: true  //Me crea 2 columnas más, una de creado y otra de actualizado 
 })
 
 const proyectosModel = mongoose.model("Proyectos", proyectosSchema)
