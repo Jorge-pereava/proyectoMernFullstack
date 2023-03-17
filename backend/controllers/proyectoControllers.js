@@ -2,7 +2,8 @@ import proyectosModel from '../models/ProyectosModels.js'
 
 //Listar todos los proyectos
 const obtenerProyectos = async(req,res) =>{
-
+    const proyectos = await proyectosModel.find().where('creadorProyecto').equals(req.usuario)
+    res.json(proyectos)
 } 
 
 //Insertar un proyecto nuevo
@@ -20,6 +21,20 @@ const nuevoProyecto = async(req,res)=>{
 
 //Listar proyecto según su ID
 const obtenerProyecto = async(req,res)=>{
+    const {id} = req.params
+
+    const verProyecto = await proyectosModel.findById(id);
+    
+    if(!verProyecto){
+        const error = new Error('No encontrado');
+        return res.status(404).json({msg:error.message})
+    }
+
+    if(verProyecto.creadorProyecto.toString() !== req.usuario._id.toString()){
+        const error = new Error('Acción no valida');
+        return res.status(404).json({msg:error.message})
+    }
+    res.json(verProyecto)
 
 }
 

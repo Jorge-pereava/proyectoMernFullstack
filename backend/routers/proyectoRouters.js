@@ -14,12 +14,12 @@ ProyectoRouter.get('/',checkAuth,obtenerProyectos);
 ProyectoRouter.post('/',checkAuth,nuevoProyecto);
 
 //Obtener, editar o eliminar un proyecto según su Id
-ProyectoRouter.route('/').get(checkAuth,obtenerProyecto).put(checkAuth,editarProyecto).delete(checkAuth,eliminarProyecto);
+ProyectoRouter.route('/:id').get(checkAuth,obtenerProyecto).put(checkAuth,editarProyecto).delete(checkAuth,eliminarProyecto);
 
 //Agregar y elimnar colaboradores
-ProyectoRouter.route('/').post(checkAuth,agregarColaboradores).post(checkAuth,eliminarColaboradores);
+ProyectoRouter.route('/:id').post(checkAuth,agregarColaboradores).post(checkAuth,eliminarColaboradores);
 
-ProyectoRouter.get('/',checkAuth,obtenerTareas)
+ProyectoRouter.get('/:id',checkAuth,obtenerTareas)
 
 
 export default ProyectoRouter;
