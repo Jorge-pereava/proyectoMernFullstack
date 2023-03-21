@@ -40,12 +40,53 @@ const obtenerProyecto = async(req,res)=>{
 
 //Editar proyecto según su ID
 const editarProyecto = async(req,res)=>{
+    const {id} = req.params;
+    const editarProyectos = await proyectosModel.findById(id);
+    
+    if(!editarProyectos){
+        const error = new Error('No encontrado');
+        return res.status(401).json({msg: error.message})
+    }
+
+    if(editarProyectos.creadorProyecto.toString() !== req.usuario._id.toString()){
+        const error = new Error('Acción no valida');
+        return res.status(401).json({msg: error.message})   
+    }
+
+    editarProyectos.nombreProyecto = req.body.nombreProyecto || editarProyectos.nombreProyecto;
+    editarProyectos.descripcionProyecto = req.body.descripcionProyecto || editarProyectos.descripcionProyecto;
+    editarProyectos.fechaEntregaProyecto = req.body.fechaEntregaProyecto || editarProyectos.fechaEntregaProyecto;
+    editarProyectos.clienteProyecto = req.body.clienteProyecto || editarProyectos.clienteProyecto;
+
+    try {
+        await editarProyectos.save();
+        res.json(editarProyectos)
+    } catch (error) {
+        console.log(`Hubo un error al actualizar el proyecto: ${error}`)
+    }
 
 }
 
 //Eliminar proyecto según su ID
 const eliminarProyecto = async(req,res)=>{
+    const {id} = req.params;
+    const editarProyectos = await proyectosModel.findById(id);
+    
+    if(!editarProyectos){
+        const error = new Error('No encontrado');
+        return res.status(401).json({msg: error.message})
+    }
 
+    if(editarProyectos.creadorProyecto.toString() !== req.usuario._id.toString()){
+        const error = new Error('Acción no valida');
+        return res.status(401).json({msg: error.message})   
+    }
+    try {
+        await editarProyectos.deleteOne();
+        res.json('Proyecto Eliminado correctamente')
+    } catch (error) {
+        console.log(`Error al eliminar un proyecto: ${error}`)
+    }
 }
 
 //Agregar los colaboradores que van a hacer parte del proyecto
