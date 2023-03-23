@@ -1,10 +1,5 @@
 import proyectosModel from '../models/ProyectosModels.js'
 
-//Listar todos los proyectos
-const obtenerProyectos = async(req,res) =>{
-    const proyectos = await proyectosModel.find().where('creadorProyecto').equals(req.usuario)
-    res.json(proyectos)
-} 
 
 //Insertar un proyecto nuevo
 const nuevoProyecto = async(req,res)=>{
@@ -18,6 +13,13 @@ const nuevoProyecto = async(req,res)=>{
         console.log(`Hubo un error al insertar el nuevo proyecto:${error}`)
     }
 }
+
+//Listar todos los proyectos
+const obtenerProyectos = async(req,res) =>{
+    const proyectos = await proyectosModel.find().where('creadorProyecto').equals(req.usuario)
+    res.json(proyectos)
+} 
+
 
 //Listar proyecto según su ID
 const obtenerProyecto = async(req,res)=>{
