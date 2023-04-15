@@ -1,6 +1,6 @@
 import express from 'express';
 
-import{obtenerProyectos,nuevoProyecto,obtenerProyecto,editarProyecto,eliminarProyecto,agregarColaboradores,eliminarColaboradores,obtenerTareas}
+import{obtenerProyectos,nuevoProyecto,obtenerProyecto,editarProyecto,eliminarProyecto,agregarColaboradores,eliminarColaboradores}
 from '../controllers/proyectoControllers.js';
 
 import checkAuth from '../middleware/checkAuth.js'
@@ -19,7 +19,6 @@ ProyectoRouter.route('/:id').get(checkAuth,obtenerProyecto).put(checkAuth,editar
 //Agregar y elimnar colaboradores
 ProyectoRouter.route('/:id').post(checkAuth,agregarColaboradores).post(checkAuth,eliminarColaboradores);
 
-ProyectoRouter.get('/:id',checkAuth,obtenerTareas)
 
 
 export default ProyectoRouter;

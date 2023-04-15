@@ -1,5 +1,5 @@
 import proyectosModel from '../models/ProyectosModels.js'
-
+import tareasModels from '../models/TareasModels.js';
 
 //Insertar un proyecto nuevo
 const nuevoProyecto = async(req,res)=>{
@@ -28,7 +28,7 @@ const obtenerProyecto = async(req,res)=>{
     const verProyecto = await proyectosModel.findById(id);
     
     if(!verProyecto){
-        const error = new Error('No encontrado');
+        const error = new Error('Proyecto no encontrado');
         return res.status(404).json({msg:error.message})
     }
 
@@ -36,7 +36,14 @@ const obtenerProyecto = async(req,res)=>{
         const error = new Error('Acción no valida');
         return res.status(404).json({msg:error.message})
     }
-    res.json(verProyecto)
+
+
+    //Obtener las tareas del proyecto, cada que liste un proyecto, que se traiga consigo las tareas que tiene asociadas
+    const tareas = await tareasModels.find().where("proyecto").equals(verProyecto._id);
+    res.json({
+        verProyecto,
+        tareas
+    })
 
 }
 
@@ -102,10 +109,6 @@ const eliminarColaboradores = async(req,res)=>{
 
 }
 
-//Obtener tareas según su ID
-const obtenerTareas = async(req,res)=>{
-
-}
 
 export{
     obtenerProyectos,
@@ -115,7 +118,6 @@ export{
     eliminarProyecto,
     agregarColaboradores,
     eliminarColaboradores,
-    obtenerTareas
 }
 
 
