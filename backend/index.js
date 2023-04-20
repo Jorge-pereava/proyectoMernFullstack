@@ -4,6 +4,7 @@ import router from './routers/usuariosRouter.js'
 import ProyectoRouter from './routers/proyectoRouters.js';
 import tareaRoutes from './routers/TareasRouters.js'
 import dotenv from 'dotenv';
+import cors from 'cors'
 
 const app = express();
 
@@ -11,6 +12,24 @@ dotenv.config();
 
 //Llamando a la base de datos
 conectarDB()
+
+//configuración de cors
+const whiteList = ['http://127.0.0.1:5173']
+const corsOptions = {
+     origin: function(origin, callback){
+          if(whiteList.includes(origin)){
+               // console.log(origin)
+               //Consultar la API
+               callback(null, true) //Null porque no hay error y le damos el acceso con el true
+
+          }else{
+               //No puede acceder a la API
+               callback(new Error('Error de politicas cors'))
+          }
+     }
+}
+
+app.use(cors(corsOptions))
 
 
 //MIDDLEWARE

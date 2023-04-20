@@ -1,12 +1,60 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-
+import Alerta from "../components/Alerta";
+import axios from "axios";
 
 const Registar = () => {
-  const [nombre, setNombre] = useState('');
+  const [name, setname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword]= useState('');
   const [repetirPassword, setRepetirPassword] = useState('')
+  const [alerta, setAlerta] = useState({})
+
+  const handleSubmit = async e =>{
+    e.preventDefault();
+
+    if([name, email, password,repetirPassword].includes('')){
+      setAlerta({
+        msg: 'Todos los campos deben ser obligatorios',
+        error: true
+      })
+      return
+    }
+
+    if(password !== repetirPassword){
+      setAlerta({
+        msg: 'Los password no son  iguales',
+        error: true
+      })
+      return
+    }
+
+    if(password.length <6){
+      setAlerta({
+        msg: 'El password debe tener más de 6 caracteres',
+        error: true
+      })
+      return
+    }
+
+    setAlerta({ })
+
+    //Creando usuario en la API
+    try {
+      const {data} = await axios.post('http://localhost:4000/api/users/register' , {name, password, email}) //Obtengo el data para poder ver directamente la información que viene desde la data y no información que no requiero
+      setAlerta({
+        msg: data.msg,
+        error:false
+      })
+    } catch (error) {
+      setAlerta({
+        msg: error.response.data.msg,
+        error: true
+      })
+    }
+  }
+
+  const{msg} = alerta //Extraigo el mensaje de la alerta, en este momento no va a estar vacia por esto le extraigo su valor para poder mostrar el mensaje
 
   return (
     <>
@@ -15,16 +63,22 @@ const Registar = () => {
         <span className="text-slate-700 ">Proyectos</span>
       </h1>
 
-      <form className="my-10 bg-white shadow rounded-lg p-10">
+      {/* MENSAJE DE ALERTA */}
+      {msg && <Alerta alerta={alerta}/>}
+
+      <form 
+        className="my-10 bg-white shadow rounded-lg p-10"
+        onSubmit={handleSubmit}
+      >
         <div className="my-5">
-            <label htmlFor="nombre" className="uppercase text-gray-700 block text-xl font-bold">Nombre</label>
+            <label htmlFor="nombre" className="uppercase text-gray-700 block text-xl font-bold">nombre</label>
             <input 
               id="nombre"
               type="text" 
               placeholder="Ingresa tu nombre"
               className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
-              value={nombre}
-              onChange={e => setNombre(e.target.value)}
+              value={name}
+              onChange={e => setname(e.target.value)}
             />
         </div>
 

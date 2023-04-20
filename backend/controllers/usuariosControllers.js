@@ -13,8 +13,10 @@ const registerUser = async(req,res)=>{
     try {
         const regUser = new usuarioModel(req.body);
         regUser.token = generarId();
-        const usuarioAlmacenado = await regUser.save();
-        res.json(usuarioAlmacenado);
+        // const usuarioAlmacenado = await regUser.save();
+        // res.json(usuarioAlmacenado);
+        await regUser.save()
+        res.json({msg: 'usuario almacenado correctamente, revisa tu email para confirmar tu cuenta'})
 
     } catch (error) {
         console.log(`No se pudo almacenar el usuario: ${error}`)
