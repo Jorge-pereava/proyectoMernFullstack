@@ -1,6 +1,48 @@
-import { Link } from "react-router-dom"
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import Alerta from "../components/Alerta";
 
 const OlvidePassword = () => {
+  const [email, setEmail] = useState('');
+  const [alerta, setAlerta] = useState({});
+
+  const handelSubmit = async (e) =>{
+    e.preventDefault();
+
+    if(email == '' || email.length < 6){
+      setAlerta({
+        msg: 'El email es obligatorio', 
+        error: true
+      });
+
+      return
+    }
+
+
+    //Validando el email para reestablacer el password
+    try {
+      const url = `${import.meta.env.VITE_BACKEND_URL}/api/users/olvide-password`
+      const {data} = await axios.post(url, {email})
+      setAlerta({
+        msg: data.msg,
+        error: false
+      })
+      
+      //console.log(data)
+
+    } catch (error) {
+      setAlerta({
+        //console.log(error.response.data.msg)
+        msg: error.response.data.msg,
+        error:true
+      })
+    }
+
+  }
+
+  const {msg} = alerta
+
   return (
     <>
       <h1 className="text-sky-600 font-bold text-6xl capitalize">
@@ -8,14 +50,21 @@ const OlvidePassword = () => {
         <span className="text-slate-700 ">Proyectos</span>
       </h1>
 
-      <form className="my-10 bg-white shadow rounded-lg p-10">
+      {msg && <Alerta alerta={alerta}/>}
+
+      <form 
+            className="my-10 bg-white shadow rounded-lg p-10"
+            onSubmit={handelSubmit}
+            >
         <div className="my-5">
           <label htmlFor="email" className="uppercase text-gray-700 block text-xl font-bold">Email</label>
           <input 
             id="email"
             type="email"
             placeholder="Ingrese su email" 
-            className="w-full mt-3 p-3 border rounded-xl bg-gray-50" 
+            className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
           />
         </div>
 

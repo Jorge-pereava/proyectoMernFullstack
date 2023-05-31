@@ -37,15 +37,23 @@ const Registar = () => {
       return
     }
 
-    setAlerta({ })
+    //setAlerta({ })
 
     //Creando usuario en la API
     try {
-      const {data} = await axios.post('http://localhost:4000/api/users/register' , {name, password, email}) //Obtengo el data para poder ver directamente la información que viene desde la data y no información que no requiero
+      const url = `${import.meta.env.VITE_BACKEND_URL}/api/users/register`;
+      const {data} = await axios.post( url, {name, password, email}) //Obtengo el data para poder ver directamente la información que viene desde la data y no información que no requiero
+      //console.log(data)
       setAlerta({
         msg: data.msg,
         error:false
       })
+
+      setname('');
+      setEmail('');
+      setPassword('');
+      setRepetirPassword('')
+
     } catch (error) {
       setAlerta({
         msg: error.response.data.msg,

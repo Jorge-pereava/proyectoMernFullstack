@@ -6,8 +6,8 @@ import OlvidePassword from './pages/OlvidePassword';
 import NuevoPassword from './pages/NuevoPassword';
 import ConfirmarCuentas from './pages/ConfirmarCuentas';
 
-function App() {
 
+function App() {
   return (
     <div className="App">
       <BrowserRouter>
@@ -18,8 +18,8 @@ function App() {
             <Route path='Olvide-Password' element={<OlvidePassword/>}/>
             <Route path='Olvide-Password/:token' element={<NuevoPassword/>}/>
             <Route path='Confirmar/:id' element={<ConfirmarCuentas/>}/>
-
           </Route>
+          
         </Routes>
       </BrowserRouter>
     </div>

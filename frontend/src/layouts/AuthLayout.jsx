@@ -1,4 +1,5 @@
 //Este componente me va a servir para todo lo relacionado al area publica, registarse, login, olivide password etc.
+
 import { Outlet } from "react-router-dom"
 
 const AuthLayout = () => {

@@ -14,7 +14,7 @@ dotenv.config();
 conectarDB()
 
 //configuración de cors
-const whiteList = ['http://127.0.0.1:5173']
+const whiteList = [process.env.FROTEND_URL]
 const corsOptions = {
      origin: function(origin, callback){
           if(whiteList.includes(origin)){
